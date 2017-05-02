@@ -153,15 +153,15 @@ function getNextBatch(seq) {
 }
 
 if (START_SEQ === 0) {
-	winston.log('verbose', 'no start seq provided');
+	winston.log('info', 'no start seq provided');
 
 	getCheckpoint().then(function (doc) {
-		winston.log('verbose', 'using start_seq ' + doc.seq);
+		winston.log('info', 'using start_seq ' + doc.seq);
 		count = doc.count;
 		getNextBatch(doc.seq);
 	});
 }
 else {
-	winston.log('verbose', 'using start_seq ' + START_SEQ);
+	winston.log('info', 'using start_seq ' + START_SEQ);
 	getNextBatch(START_SEQ);
 }
