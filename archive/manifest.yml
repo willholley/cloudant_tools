@@ -1,0 +1,5 @@
+applications:
+- name: msw_archive
+  memory: 512MB
+  command: node archive.js
+  no-route: true

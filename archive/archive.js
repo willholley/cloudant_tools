@@ -64,7 +64,8 @@ function getCheckpoint () {
 }
 
 function writeBatch (seq, changes) {
-	winston.log('verbose', 'writeBatch', changes);
+	winston.log('debug', 'writeBatch', changes);
+	winston.log('verbose', 'writeBatch');
 	var lastSeq = changes.last_seq;
 	var docs = changes.results.map(row => row.doc);
 
@@ -91,7 +92,9 @@ function writeBatch (seq, changes) {
 function deleteBatch (startSeq, lastSeq, docs) {
 	winston.log('verbose', 'deleteBatch', {
 		"startSeq": startSeq,
-		"lastSeq": lastSeq,
+		"lastSeq": lastSeq
+	});
+	winston.log('debug', 'deleteBatch', {
 		"docs": docs
 	});
 
