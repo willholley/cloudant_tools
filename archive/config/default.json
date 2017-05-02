@@ -1,0 +1,12 @@
+{
+  "selector": {
+	"timestamp": {
+      "$lt": "2016-01-01"
+    }
+  },
+  "batch_size": 500,
+  "dry_run": true,
+  "start_seq": 0,
+  "source": "",
+  "target": ""
+}
