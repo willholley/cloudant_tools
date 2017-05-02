@@ -1,5 +1,8 @@
 applications:
 - name: msw_archive
-  memory: 512MB
+  memory: 2GB
   command: node archive.js
   no-route: true
+  health-check-type: none
+  env:
+    LOG_LEVEL: 'info'

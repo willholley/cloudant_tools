@@ -34,13 +34,15 @@ var target = new PouchDB(TARGET);
 
 var count = 0;
 
-var checkpointDoc = '_local/' + shasum.update(SOURCE).digest('hex');
+var archive_id = shasum.update(SOURCE + DRY_RUN).digest('hex');
+var checkpointDoc = '_local/' + archive_id;
 
 
 function writeCheckpoint (seq) {
 	getCheckpoint().then(function (doc) {
 		winston.log('verbose', 'writing checkpoint ' + checkpointDoc);
 		doc.seq = seq;
+		doc.count = count;
 		return target.put(doc);
 	});
 }
@@ -54,7 +56,8 @@ function getCheckpoint () {
 			if (err.status === 404) {
 				return {
 					'_id': checkpointDoc,
-					'seq': 0
+					'seq': 0,
+					'count': 0
 				};
 			}
 			winston.log('error', err);
@@ -107,7 +110,7 @@ function deleteBatch (startSeq, lastSeq, docs) {
 	});
 	source.bulkDocs(idRevPairs).then(function (result) {
 		count = count + idRevPairs.length;
-		winston.log('info', 'source sequence ' + lastSeq + 'deleted from source');
+		winston.log('info', 'source sequence ' + lastSeq + ' deleted from source');
 		winston.log('info', 'total docs moved: ' + count);
 
 		getNextBatch(lastSeq);
@@ -154,6 +157,7 @@ if (START_SEQ === 0) {
 
 	getCheckpoint().then(function (doc) {
 		winston.log('verbose', 'using start_seq ' + doc.seq);
+		count = doc.count;
 		getNextBatch(doc.seq);
 	});
 }
